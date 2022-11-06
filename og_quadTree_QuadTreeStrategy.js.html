@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: Icosphere</title>
+    <title>Source: og/quadTree/QuadTreeStrategy.js</title>
     
     
     
@@ -5068,600 +5068,109 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="module-og_shape_BaseShape-Icosphere.html">Class: Icosphere</h1>
+        <h1 class="page-title" data-filename="og_quadTree_QuadTreeStrategy.js.html">Source: og/quadTree/QuadTreeStrategy.js</h1>
         
 
 
+    
+    <section>
+        <article>
+            <pre id="source-code" class="prettyprint source "><code>"use strict";
+import { EPSG3857 } from "../proj/EPSG3857.js";
 
-<section>
-    
-<header>
-    <h2>
-        <span class="ancestors"><a href="module-og_shape_BaseShape.html">og/shape/BaseShape</a>~</span>
-    
-    Icosphere
-    </h2>
-    
-</header>  
+export class QuadTreeStrategy {
+    constructor(options = {}) {
+        this.name = "";
+        this._planet = options.planet;
+        this.projection = EPSG3857;
 
-<article>
-    <div class="container-overview">
-    
-    
-    
-        
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="Icosphere">
-            
-            new Icosphere<span class="signature">(options)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_shapes_Icosphere.js.html">og/shapes/Icosphere.js</a>, <a href="og_shapes_Icosphere.js.html#line22">line 22</a>
-        </div>
-        
-    </div>
+        /**
+         * grid tree list.
+         * @protected
+         * @type {quadTree.Node[]}
+         */
+        this._quadTreeList = [];
+    }
 
-    
-</dt>
-<dd>
-    
-    
+    destroyBranches() {
+        for (let i = 0, len = this._quadTreeList.length; i &lt; len; i++) {
+            this._quadTreeList[i].destroyBranches();
+        }
+    }
 
-    
-    
-    
-    
-    
-        
+    clearLayerMaterial(layer) {
+        let lid = layer._id;
+        for (let i = 0, len = this._quadTreeList.length; i &lt; len; i++) {
+            this._quadTreeList[i].traverseTree(function (node) {
+                let mats = node.segment.materials;
+                if (mats[lid]) {
+                    mats[lid].clear();
+                    mats[lid] = null;
+                    delete mats[lid];
+                }
+            });
+        }
+    }
 
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Object.html">Object</a></span>
+    get planet() {
+        return this._planet;
+    }
 
+    init() {
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                Icosphere parameters:
-                
+    }
 
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>position</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Vec3</span>
+    preRender() {
+        for (let i = 0; i &lt; this._quadTreeList.length; i++) {
 
+            let quadTree = this._quadTreeList[i];
+            quadTree.createChildrenNodes();
+            quadTree.segment.createPlainSegment();
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                Icosphere position.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>orientation</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Quat.html">Quat</a></span>
+            for (let j = 0; j &lt; quadTree.nodes.length; j++) {
+                quadTree.nodes[j].segment.createPlainSegment();
+            }
+        }
 
+    }
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                Icosphere orientation(rotation).</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>scale</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Vec3</span>
+    preLoad() {
 
+        for (let i = 0; i &lt; this._quadTreeList.length; i++) {
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                Scale vector.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>color</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;number></span>
+            let quadTree = this._quadTreeList[i];
+            quadTree.segment.passReady = true;
+            quadTree.renderNode(true);
+            this._planet.normalMapCreator.drawSingle(quadTree.segment);
 
+            for (let j = 0; j &lt; quadTree.nodes.length; j++) {
+                quadTree.nodes[j].segment.passReady = true;
+                quadTree.nodes[j].renderNode(true);
+                this._planet._normalMapCreator.drawSingle(quadTree.nodes[j].segment);
+            }
+        }
+    }
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                Icosphere RGBA color. (exactly 4 entries)</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>src</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
+    collectRenderNodes() {
+        for (let i = 0; i &lt; this._quadTreeList.length; i++) {
+            this._quadTreeList[i].renderTree(this._planet.camera, 0, null);
+        }
+    }
 
+    clear() {
+        for (let i = 0; i &lt; this._quadTreeList.length; i++) {
+            this._quadTreeList[i].clearTree();
+        }
+    }
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                Texture image url source.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>visibility</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
+    get quadTreeList() {
+        return this._quadTreeList;
+    }
 
+}</code></pre>
+        </article>
+    </section>
 
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                Icosphere visibility.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>size</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                Icosphere radius.</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>level</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                    
-                        <span class="optional">optional</span>
-                    
-                    
-                        
-                    
-                
-                Icosphere complexity level.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li>BaseShape</li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="_level"><span class="type-signature ">protected</span>_level<span class="type-signature type number">number</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Icosphere recursion level.
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="_size"><span class="type-signature ">protected</span>_size<span class="type-signature type number">number</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Icosphere radius.
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="_createData">
-            
-            <span class="type-signature ">abstract,protected</span>_createData<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_shapes_Icosphere.js.html">og/shapes/Icosphere.js</a>, <a href="og_shapes_Icosphere.js.html#line97">line 97</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Create specific shape vertices data.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-    
-    
-
-    
-</article>
-
-</section>  
 
 
 
@@ -5670,7 +5179,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Sun Nov 06 2022 11:00:15 GMT+0000 (Coordinated Universal Time)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Sun Nov 06 2022 11:00:13 GMT+0000 (Coordinated Universal Time)
         </footer>
     </div>
 </div>
