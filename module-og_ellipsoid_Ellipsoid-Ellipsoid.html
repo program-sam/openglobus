@@ -1221,8 +1221,6 @@
             
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid.intersection"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#.intersection">intersection</a></li>
             
-                <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#cartesianToLonLat"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#cartesianToLonLat">cartesianToLonLat</a></li>
-            
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#geodeticToCartesian"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#geodeticToCartesian">geodeticToCartesian</a></li>
             
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#getBearingDestination"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#getBearingDestination">getBearingDestination</a></li>
@@ -1242,6 +1240,8 @@
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#lonLatToCartesian"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#lonLatToCartesian">lonLatToCartesian</a></li>
             
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#lonLatToCartesianRes"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#lonLatToCartesianRes">lonLatToCartesianRes</a></li>
+            
+                <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#projToSurface"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#projToSurface">projToSurface</a></li>
             
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#rhumbDistanceTo"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#rhumbDistanceTo">rhumbDistanceTo</a></li>
             
@@ -5123,7 +5123,7 @@
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line18">line 18</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line17">line 17</a>
         </div>
         
     </div>
@@ -5276,7 +5276,7 @@
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line263">line 263</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line262">line 262</a>
         </div>
         
     </div>
@@ -5445,7 +5445,7 @@ will differ from the initial bearing by varying degrees according to distance an
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line177">line 177</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line176">line 176</a>
         </div>
         
     </div>
@@ -5613,7 +5613,7 @@ will differ from the initial bearing by varying degrees according to distance an
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line110">line 110</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line109">line 109</a>
         </div>
         
     </div>
@@ -5804,7 +5804,7 @@ will differ from the initial bearing by varying degrees according to distance an
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line85">line 85</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line84">line 84</a>
         </div>
         
     </div>
@@ -5972,7 +5972,7 @@ will differ from the initial bearing by varying degrees according to distance an
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line195">line 195</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line194">line 194</a>
         </div>
         
     </div>
@@ -6182,151 +6182,6 @@ will differ from the initial bearing by varying degrees according to distance an
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="cartesianToLonLat">
-            
-            cartesianToLonLat<span class="signature">(cartesian)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{LonLat}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line361">line 361</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets Wgs84 geodetic coordiantes from cartesian ECEF.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>cartesian</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Vec3</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                Cartesian coordinates.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        LonLat
-                        
-                    
-            </td>
-            <td class="description last">-</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
         <h4 class="name" id="geodeticToCartesian">
             
             geodeticToCartesian<span class="signature">(lon, lat, height)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
@@ -6334,7 +6189,7 @@ will differ from the initial bearing by varying degrees according to distance an
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line339">line 339</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line338">line 338</a>
         </div>
         
     </div>
@@ -6541,7 +6396,7 @@ will differ from the initial bearing by varying degrees according to distance an
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line421">line 421</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line448">line 448</a>
         </div>
         
     </div>
@@ -6765,7 +6620,7 @@ will differ from the initial bearing by varying degrees according to distance an
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line273">line 273</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line272">line 272</a>
         </div>
         
     </div>
@@ -6865,7 +6720,7 @@ will differ from the initial bearing by varying degrees according to distance an
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line465">line 465</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line492">line 492</a>
         </div>
         
     </div>
@@ -6939,7 +6794,7 @@ Based on the Vincenty direct formula by T. Vincenty, “Direct and Inverse Solut
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line447">line 447</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line474">line 474</a>
         </div>
         
     </div>
@@ -7107,7 +6962,7 @@ Based on the Vincenty direct formula by T. Vincenty, “Direct and Inverse Solut
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line282">line 282</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line281">line 281</a>
         </div>
         
     </div>
@@ -7207,7 +7062,7 @@ Based on the Vincenty direct formula by T. Vincenty, “Direct and Inverse Solut
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line405">line 405</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line432">line 432</a>
         </div>
         
     </div>
@@ -7352,7 +7207,7 @@ Based on the Vincenty direct formula by T. Vincenty, “Direct and Inverse Solut
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line534">line 534</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line561">line 561</a>
         </div>
         
     </div>
@@ -7521,7 +7376,7 @@ If the ray doesn't hit ellipsoid returns null.
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line292">line 292</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line291">line 291</a>
         </div>
         
     </div>
@@ -7666,7 +7521,7 @@ If the ray doesn't hit ellipsoid returns null.
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line315">line 315</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line314">line 314</a>
         </div>
         
     </div>
@@ -7827,6 +7682,151 @@ If the ray doesn't hit ellipsoid returns null.
             
 <dt>
     <div class="nameContainer">
+        <h4 class="name" id="projToSurface">
+            
+            projToSurface<span class="signature">(p)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{LonLat}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line360">line 360</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Gets Wgs84 geodetic coordiantes from cartesian ECEF.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>p</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Vec3</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                Cartesian coordinates.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        LonLat
+                        
+                    
+            </td>
+            <td class="description last">-</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
         <h4 class="name" id="rhumbDistanceTo">
             
             rhumbDistanceTo<span class="signature">(start, end)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
@@ -7834,7 +7834,7 @@ If the ray doesn't hit ellipsoid returns null.
     
         
         <div class="tag-source">
-            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line67">line 67</a>
+            <a href="og_ellipsoid_Ellipsoid.js.html">og/ellipsoid/Ellipsoid.js</a>, <a href="og_ellipsoid_Ellipsoid.js.html#line66">line 66</a>
         </div>
         
     </div>
@@ -8010,7 +8010,7 @@ If the ray doesn't hit ellipsoid returns null.
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Fri Nov 18 2022 16:55:58 GMT+0000 (Coordinated Universal Time)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Tue Nov 22 2022 13:17:19 GMT+0000 (Coordinated Universal Time)
         </footer>
     </div>
 </div>

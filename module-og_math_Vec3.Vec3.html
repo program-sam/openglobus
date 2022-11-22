@@ -1221,8 +1221,6 @@
             
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid.intersection"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#.intersection">intersection</a></li>
             
-                <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#cartesianToLonLat"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#cartesianToLonLat">cartesianToLonLat</a></li>
-            
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#geodeticToCartesian"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#geodeticToCartesian">geodeticToCartesian</a></li>
             
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#getBearingDestination"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#getBearingDestination">getBearingDestination</a></li>
@@ -1242,6 +1240,8 @@
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#lonLatToCartesian"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#lonLatToCartesian">lonLatToCartesian</a></li>
             
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#lonLatToCartesianRes"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#lonLatToCartesianRes">lonLatToCartesianRes</a></li>
+            
+                <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#projToSurface"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#projToSurface">projToSurface</a></li>
             
                 <li data-name="module:og/ellipsoid/Ellipsoid~Ellipsoid#rhumbDistanceTo"><a href="module-og_ellipsoid_Ellipsoid-Ellipsoid.html#rhumbDistanceTo">rhumbDistanceTo</a></li>
             
@@ -5852,12 +5852,12 @@
     <div class="nameContainer">
         <h4 class="name" id="add">
             
-            add<span class="signature">(point3)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
+            add<span class="signature">(p)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line431">line 431</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line450">line 450</a>
         </div>
         
     </div>
@@ -5899,7 +5899,7 @@
 	
         <tr>
             
-                <td class="name"><code>point3</code></td>
+                <td class="name"><code>p</code></td>
             
             
             <td class="type">
@@ -5997,12 +5997,12 @@
     <div class="nameContainer">
         <h4 class="name" id="addA">
             
-            addA<span class="signature">(point3)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
+            addA<span class="signature">(p)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line418">line 418</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line437">line 437</a>
         </div>
         
     </div>
@@ -6044,7 +6044,7 @@
 	
         <tr>
             
-                <td class="name"><code>point3</code></td>
+                <td class="name"><code>p</code></td>
             
             
             <td class="type">
@@ -6147,7 +6147,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line777">line 777</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line796">line 796</a>
         </div>
         
     </div>
@@ -6292,7 +6292,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line566">line 566</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line585">line 585</a>
         </div>
         
     </div>
@@ -6392,7 +6392,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line331">line 331</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line350">line 350</a>
         </div>
         
     </div>
@@ -6487,12 +6487,12 @@
     <div class="nameContainer">
         <h4 class="name" id="copy">
             
-            copy<span class="signature">(point3)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
+            copy<span class="signature">(p)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line378">line 378</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line397">line 397</a>
         </div>
         
     </div>
@@ -6534,7 +6534,7 @@
 	
         <tr>
             
-                <td class="name"><code>point3</code></td>
+                <td class="name"><code>p</code></td>
             
             
             <td class="type">
@@ -6637,7 +6637,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line553">line 553</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line572">line 572</a>
         </div>
         
     </div>
@@ -6777,12 +6777,12 @@
     <div class="nameContainer">
         <h4 class="name" id="distance">
             
-            distance<span class="signature">(point3)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            distance<span class="signature">(p)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line702">line 702</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line721">line 721</a>
         </div>
         
     </div>
@@ -6824,7 +6824,7 @@
 	
         <tr>
             
-                <td class="name"><code>point3</code></td>
+                <td class="name"><code>p</code></td>
             
             
             <td class="type">
@@ -6922,12 +6922,12 @@
     <div class="nameContainer">
         <h4 class="name" id="distance2">
             
-            distance2<span class="signature">(point3)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            distance2<span class="signature">(p)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line715">line 715</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line734">line 734</a>
         </div>
         
     </div>
@@ -6969,7 +6969,7 @@
 	
         <tr>
             
-                <td class="name"><code>point3</code></td>
+                <td class="name"><code>p</code></td>
             
             
             <td class="type">
@@ -7072,7 +7072,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line523">line 523</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line542">line 542</a>
         </div>
         
     </div>
@@ -7217,7 +7217,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line510">line 510</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line529">line 529</a>
         </div>
         
     </div>
@@ -7357,12 +7357,12 @@
     <div class="nameContainer">
         <h4 class="name" id="dot">
             
-            dot<span class="signature">(point3)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
+            dot<span class="signature">(a)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{number}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line533">line 533</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line552">line 552</a>
         </div>
         
     </div>
@@ -7404,7 +7404,7 @@
 	
         <tr>
             
-                <td class="name"><code>point3</code></td>
+                <td class="name"><code>a</code></td>
             
             
             <td class="type">
@@ -7507,7 +7507,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line543">line 543</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line562">line 562</a>
         </div>
         
     </div>
@@ -7652,7 +7652,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line369">line 369</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line388">line 388</a>
         </div>
         
     </div>
@@ -7797,7 +7797,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line576">line 576</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line595">line 595</a>
         </div>
         
     </div>
@@ -7897,7 +7897,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line408">line 408</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line427">line 427</a>
         </div>
         
     </div>
@@ -7997,7 +7997,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line860">line 860</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line879">line 879</a>
         </div>
         
     </div>
@@ -8165,7 +8165,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line349">line 349</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line368">line 368</a>
         </div>
         
     </div>
@@ -8265,7 +8265,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line390">line 390</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line409">line 409</a>
         </div>
         
     </div>
@@ -8365,7 +8365,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line399">line 399</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line418">line 418</a>
         </div>
         
     </div>
@@ -8465,7 +8465,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line788">line 788</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line807">line 807</a>
         </div>
         
     </div>
@@ -8633,7 +8633,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line500">line 500</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line519">line 519</a>
         </div>
         
     </div>
@@ -8778,7 +8778,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line487">line 487</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line506">line 506</a>
         </div>
         
     </div>
@@ -8923,7 +8923,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line742">line 742</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line761">line 761</a>
         </div>
         
     </div>
@@ -9023,7 +9023,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line754">line 754</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line773">line 773</a>
         </div>
         
     </div>
@@ -9123,7 +9123,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line595">line 595</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line614">line 614</a>
         </div>
         
     </div>
@@ -9225,7 +9225,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line667">line 667</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line686">line 686</a>
         </div>
         
     </div>
@@ -9325,7 +9325,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line613">line 613</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line632">line 632</a>
         </div>
         
     </div>
@@ -9425,7 +9425,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line631">line 631</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line650">line 650</a>
         </div>
         
     </div>
@@ -9525,7 +9525,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line649">line 649</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line668">line 668</a>
         </div>
         
     </div>
@@ -9625,7 +9625,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line765">line 765</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line784">line 784</a>
         </div>
         
     </div>
@@ -9793,7 +9793,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line464">line 464</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line483">line 483</a>
         </div>
         
     </div>
@@ -9938,7 +9938,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line477">line 477</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line496">line 496</a>
         </div>
         
     </div>
@@ -10083,7 +10083,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line730">line 730</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line749">line 749</a>
         </div>
         
     </div>
@@ -10274,7 +10274,7 @@
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line826">line 826</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line845">line 845</a>
         </div>
         
     </div>
@@ -10445,7 +10445,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line803">line 803</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line822">line 822</a>
         </div>
         
     </div>
@@ -10608,12 +10608,12 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     <div class="nameContainer">
         <h4 class="name" id="sub">
             
-            sub<span class="signature">(point3)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
+            sub<span class="signature">(p)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line454">line 454</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line473">line 473</a>
         </div>
         
     </div>
@@ -10655,7 +10655,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
 	
         <tr>
             
-                <td class="name"><code>point3</code></td>
+                <td class="name"><code>p</code></td>
             
             
             <td class="type">
@@ -10753,12 +10753,12 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     <div class="nameContainer">
         <h4 class="name" id="subA">
             
-            subA<span class="signature">(point3)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
+            subA<span class="signature">(p)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Vec3}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line441">line 441</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line460">line 460</a>
         </div>
         
     </div>
@@ -10800,7 +10800,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
 	
         <tr>
             
-                <td class="name"><code>point3</code></td>
+                <td class="name"><code>p</code></td>
             
             
             <td class="type">
@@ -10903,7 +10903,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line692">line 692</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line711">line 711</a>
         </div>
         
     </div>
@@ -11003,7 +11003,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line340">line 340</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line359">line 359</a>
         </div>
         
     </div>
@@ -11103,7 +11103,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line683">line 683</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line702">line 702</a>
         </div>
         
     </div>
@@ -11205,7 +11205,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line322">line 322</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line341">line 341</a>
         </div>
         
     </div>
@@ -11305,7 +11305,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line207">line 207</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line216">line 216</a>
         </div>
         
     </div>
@@ -11473,7 +11473,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line184">line 184</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line193">line 193</a>
         </div>
         
     </div>
@@ -11641,7 +11641,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line311">line 311</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line318">line 318</a>
         </div>
         
     </div>
@@ -11809,7 +11809,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line131">line 131</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line140">line 140</a>
         </div>
         
     </div>
@@ -12000,7 +12000,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line87">line 87</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line96">line 96</a>
         </div>
         
     </div>
@@ -12191,7 +12191,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line173">line 173</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line182">line 182</a>
         </div>
         
     </div>
@@ -12336,7 +12336,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line196">line 196</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line205">line 205</a>
         </div>
         
     </div>
@@ -12527,7 +12527,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line246">line 246</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line253">line 253</a>
         </div>
         
     </div>
@@ -12695,7 +12695,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line259">line 259</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line266">line 266</a>
         </div>
         
     </div>
@@ -12863,7 +12863,7 @@ by the angle and its magnitude is interpolated between the magnitudes of from an
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line298">line 298</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line305">line 305</a>
         </div>
         
     </div>
@@ -13032,7 +13032,7 @@ Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal 
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line286">line 286</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line293">line 293</a>
         </div>
         
     </div>
@@ -13200,7 +13200,7 @@ Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal 
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line271">line 271</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line278">line 278</a>
         </div>
         
     </div>
@@ -13408,7 +13408,7 @@ Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal 
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line359">line 359</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line378">line 378</a>
         </div>
         
     </div>
@@ -13553,7 +13553,7 @@ Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal 
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line233">line 233</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line242">line 242</a>
         </div>
         
     </div>
@@ -13721,7 +13721,7 @@ Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal 
     
         
         <div class="tag-source">
-            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line220">line 220</a>
+            <a href="og_math_Vec3.js.html">og/math/Vec3.js</a>, <a href="og_math_Vec3.js.html#line229">line 229</a>
         </div>
         
     </div>
@@ -13897,7 +13897,7 @@ Normalizes normal. Normalizes tangent and makes sure it is orthogonal to normal 
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Fri Nov 18 2022 16:55:59 GMT+0000 (Coordinated Universal Time)
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a> on Tue Nov 22 2022 13:17:21 GMT+0000 (Coordinated Universal Time)
         </footer>
     </div>
 </div>
