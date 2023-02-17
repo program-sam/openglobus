@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: Xhr</title>
+    <title>Source: og/control/Atmosphere.js</title>
     
     
     
@@ -46,30 +46,6 @@
         <li class="item" data-name="og">
             <span class="title">
                 <a href="og.html">og</a>
-                
-                <span class="static">static</span>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
-        <li class="item" data-name="og.ajax">
-            <span class="title">
-                <a href="og.ajax.html">og.ajax</a>
                 
                 <span class="static">static</span>
                 
@@ -1773,32 +1749,6 @@
             </ul>
         </li>
     
-        <li class="item" data-name="module:og/ajax~Xhr">
-            <span class="title">
-                <a href="module-og_ajax-Xhr.html">module:og/ajax~Xhr</a>
-                
-            </span>
-            <ul class="members itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="typedefs itemMembers">
-            
-            </ul>
-            <ul class="methods itemMembers">
-            
-            <span class="subtitle">Methods</span>
-            
-                <li data-name="module:og/ajax~Xhr#abort"><a href="module-og_ajax-Xhr.html#abort">abort</a></li>
-            
-            </ul>
-            <ul class="events itemMembers">
-            
-            </ul>
-        </li>
-    
         <li class="item" data-name="module:og/bv/Box~Box">
             <span class="title">
                 <a href="module-og_bv_Box-Box.html">module:og/bv/Box~Box</a>
@@ -2019,6 +1969,28 @@
             </ul>
         </li>
     
+        <li class="item" data-name="module:og/control/Atmosphere~Atmosphere">
+            <span class="title">
+                <a href="module-og_control_Atmosphere-Atmosphere.html">module:og/control/Atmosphere~Atmosphere</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
         <li class="item" data-name="module:og/control/Control~Control">
             <span class="title">
                 <a href="module-og_control_Control-Control.html">module:og/control/Control~Control</a>
@@ -2173,9 +2145,9 @@
             </ul>
         </li>
     
-        <li class="item" data-name="module:og/control/Lighting~Lighting">
+        <li class="item" data-name="module:og/control/Lighting~ICON_BUTTON_SVG">
             <span class="title">
-                <a href="module-og_control_Lighting-Lighting.html">module:og/control/Lighting~Lighting</a>
+                <a href="module-og_control_Lighting-ICON_BUTTON_SVG.html">module:og/control/Lighting~ICON_BUTTON_SVG</a>
                 
             </span>
             <ul class="members itemMembers">
@@ -4374,6 +4346,8 @@
             
                 <li data-name="module:og/scene/Planet.Planet#mousePositionOnEarth"><a href="module-og_scene_Planet.Planet.html#mousePositionOnEarth">mousePositionOnEarth</a></li>
             
+                <li data-name="module:og/scene/Planet.Planet#nightTextureCoefficient"><a href="module-og_scene_Planet.Planet.html#nightTextureCoefficient">nightTextureCoefficient</a></li>
+            
                 <li data-name="module:og/scene/Planet.Planet#renderer"><a href="module-og_scene_Planet.Planet.html#renderer">renderer</a></li>
             
                 <li data-name="module:og/scene/Planet.Planet#show"><a href="module-og_scene_Planet.Planet.html#show">show</a></li>
@@ -4819,8 +4793,6 @@
             
                 <li data-name="module:og/webgl/Framebuffer.Framebuffer#isComplete"><a href="module-og_webgl_Framebuffer.Framebuffer.html#isComplete">isComplete</a></li>
             
-                <li data-name="module:og/webgl/Framebuffer.Framebuffer#openImage"><a href="module-og_webgl_Framebuffer.Framebuffer.html#openImage">openImage</a></li>
-            
                 <li data-name="module:og/webgl/Framebuffer.Framebuffer#readAllPixels"><a href="module-og_webgl_Framebuffer.Framebuffer.html#readAllPixels">readAllPixels</a></li>
             
                 <li data-name="module:og/webgl/Framebuffer.Framebuffer#readPixels"><a href="module-og_webgl_Framebuffer.Framebuffer.html#readPixels">readPixels</a></li>
@@ -5046,242 +5018,411 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="module-og_ajax-Xhr.html">Class: Xhr</h1>
+        <h1 class="page-title" data-filename="og_control_Atmosphere.js.html">Source: og/control/Atmosphere.js</h1>
         
 
 
+    
+    <section>
+        <article>
+            <pre id="source-code" class="prettyprint source "><code>/**
+ * @module og/control/Atmosphere
+ */
 
-<section>
-    
-<header>
-    <h2>
-        <span class="ancestors"><a href="module-og_ajax.html">og/ajax</a>~</span>
-    
-    Xhr
-    </h2>
-    
-</header>  
+"use strict";
 
-<article>
-    <div class="container-overview">
-    
-    
-    
-        
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="Xhr">
-            
-            new Xhr<span class="signature">(xhr)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_ajax.js.html">og/ajax.js</a>, <a href="og_ajax.js.html#line63">line 63</a>
-        </div>
-        
-    </div>
+import { Control } from "./Control.js";
+import { Program } from '../webgl/Program.js';
+import * as atmos from "../shaders/atmos.js";
+import { Framebuffer } from "../webgl/index.js";
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Xhr object that returned by ajax query.
-    </div>
-    
+/**
+ * Frame per second(FPS) display control.
+ * @class
+ * @extends {Control}
+ * @param {Object} [options] - Control options.
+ */
+class Atmosphere extends Control {
+    constructor(options) {
+        super({
+            name: "Atmosphere",
+            ...options
+        });
 
-    
-    
-    
-    
-    
-        
+        this._transmittanceBuffer = null;
+        this._scatteringBuffer = null;
+    }
 
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
+    oninit() {
+        this.renderer.handler.addProgram(atmos.transmittance(), true);
+        this.renderer.handler.addProgram(atmos.scattering(), true);
+        this.renderer.handler.addProgram(atmosphereBackgroundShader(), true);
+
+        this._drawAtmosphereTextures();
+
+        this.planet.events.on("draw", this._drawBackground, this);
+    }
+
+    onactivate() {
+        super.onactivate();
+        this.planet.events.on("draw", this._drawBackground, this);
+    }
+
+    ondeactivate() {
+        super.ondeactivate();
+        this.planet.events.off("draw", this._drawBackground);
+    }
+
+    _drawAtmosphereTextures() {
+
+        let width = 512,
+            height = 512;
+
+        this._transmittanceBuffer = new Framebuffer(this.renderer.handler, {
+            width: width,
+            height: height,
+            useDepth: false,
+            filter: "LINEAR",
+            type: "FLOAT",
+            internalFormat: "RGBA16F"
+        });
+
+        this._transmittanceBuffer.init();
+
+        this._scatteringBuffer = new Framebuffer(this.renderer.handler, {
+            width: width,
+            height: height,
+            useDepth: false,
+            filter: "LINEAR",
+            type: "FLOAT",
+            internalFormat: "RGBA16F"
+        });
+
+        this._scatteringBuffer.init();
+
+        let positionBuffer = this.renderer.screenFramePositionBuffer;
+
+        let h = this.renderer.handler;
+        let gl = h.gl;
+
+        //
+        // Draw transmittance texture
+        //
+        this._transmittanceBuffer.activate();
+
+        let p = h.programs.transmittance;
+        let sha = p._program.attributes;
+        let shu = p._program.uniforms;
+        p.activate();
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        gl.uniform2fv(shu.iResolution, [this._transmittanceBuffer.width, this._transmittanceBuffer.height]);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.vertexAttribPointer(sha.a_position, positionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, positionBuffer.numItems);
+
+        this._transmittanceBuffer.deactivate();
+
+        //
+        // Draw scattering texture
+        //
+        this._scatteringBuffer.activate();
+
+        p = h.programs.scattering;
+        sha = p._program.attributes;
+        shu = p._program.uniforms;
+        p.activate();
+
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        gl.uniform2fv(shu.iResolution, [this._scatteringBuffer.width, this._scatteringBuffer.height]);
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this._transmittanceBuffer.textures[0]);
+        gl.uniform1i(shu.transmittanceTexture, 0);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.vertexAttribPointer(sha.a_position, positionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, positionBuffer.numItems);
+
+        this._scatteringBuffer.deactivate();
+    }
+
+    _drawBackground() {
+        let h = this.renderer.handler;
+        let sh = h.programs.atmosphereBackground,
+            p = sh._program,
+            shu = p.uniforms, gl = h.gl;
+        let cam = this.renderer.activeCamera;
+
+        gl.disable(gl.DEPTH_TEST);
+
+        gl.blendEquation(gl.FUNC_ADD);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.enable(gl.BLEND);
+
+        sh.activate();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.renderer.screenFramePositionBuffer);
+        gl.vertexAttribPointer(p.attributes.corners, 2, gl.FLOAT, false, 0, 0);
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, this._transmittanceBuffer.textures[0]);
+        gl.uniform1i(shu.transmittanceTexture, 0);
+
+        gl.activeTexture(gl.TEXTURE1);
+        gl.bindTexture(gl.TEXTURE_2D, this._scatteringBuffer.textures[0]);
+        gl.uniform1i(shu.scatteringTexture, 1);
+
+        gl.uniform3fv(shu.camPos, [cam.eye.x, cam.eye.y, cam.eye.z]);
+        gl.uniform2fv(shu.iResolution, [this.renderer.sceneFramebuffer.width, this.renderer.sceneFramebuffer.height]);//[h.getWidth(), h.getHeight()]);
+        gl.uniform1f(shu.fov, cam.getViewAngle());
+
+        let sunPos = this.planet.sunPos;
+        gl.uniform3fv(shu.sunPos, [sunPos.x, sunPos.y, sunPos.z]);
+
+        gl.uniformMatrix4fv(shu.viewMatrix, false, cam._viewMatrix._m);
+
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        gl.enable(gl.DEPTH_TEST);
+        gl.disable(gl.BLEND);
+    }
+}
+
+function atmosphereBackgroundShader() {
+    return new Program("atmosphereBackground", {
+        uniforms: {
+            iResolution: "vec2",
+            fov: "float",
+            camPos: "vec3",
+            //earthRadius: "float",
+            viewMatrix: "mat4",
+            transmittanceTexture: "sampler2D",
+            scatteringTexture: "sampler2D",
+            sunPos: "vec3"
+        },
+        attributes: {
+            corners: "vec3"
+        },
+        vertexShader:
+            `            
+            attribute vec2 corners;
             
-                <td class="name"><code>xhr</code></td>
+            void main(void) {
+                gl_Position = vec4(corners, 0.0, 1.0);
+            }`,
+        fragmentShader:
+            `                                   
+            precision highp float;
             
+            ${atmos.COMMON}
             
-            <td class="type">
+            uniform vec3 camPos;     
+            uniform vec2 iResolution;
+            uniform float fov;
             
+            uniform mat4 viewMatrix;
+            
+            uniform sampler2D transmittanceTexture;
+            uniform sampler2D scatteringTexture;
+                        
+            uniform vec3 sunPos;                                  
+                                   
+            vec3 transmittanceFromTexture(float height, float angle) 
+            {
+                float u = (angle + 1.0) * 0.5;
+                float v = height / ATMOS_HEIGHT;
+                return texture2D(transmittanceTexture, vec2(u, v)).xyz;
+            }
+            
+            vec3 multipleScatteringContributionFromTexture(float height, float angle) 
+            {
+                float u = (angle + 1.0) * 0.5;
+                float v = height / ATMOS_HEIGHT;
+                return texture2D(scatteringTexture, vec2(u, v)).xyz; 
+            }
+
+            bool intersectEllipsoidToSphere(in vec3 ro, in vec3 rd, in vec3 ellRadii, in float sphereRadius, out float t1, out float t2) 
+            {
+                float offset = 0.0,
+                      distanceToSpace = 0.0;
+                                                        
+                if(intersectEllipsoid(ro, rd, ellRadii, offset, distanceToSpace)){
+                    vec3 hitEll = ro + rd * offset;
+                    vec3 nEll = normalEllipsoid(hitEll, ellRadii);
+                    float t = 0.0;
+                    bool intersectsSphere = intersectSphere(hitEll, nEll, sphereRadius, t);
+                    vec3 hitSphere = hitEll + nEll * t;
+                    t1 = length(hitSphere - ro);
+                    
+                    hitEll = ro + rd * distanceToSpace;
+                    nEll = normalEllipsoid(hitEll, ellRadii);
+                    t = 0.0;
+                    intersectsSphere = intersectSphere(hitEll, nEll, sphereRadius, t);
+                    hitSphere = hitEll + nEll * t;
+                    t2 = length(hitSphere - ro);
+                    
+                    return true; 
+                }
+                return false; 
+            }
+            
+            mat4 transpose(in mat4 m) 
+            {
+                vec4 i0 = m[0];
+                vec4 i1 = m[1];
+                vec4 i2 = m[2];
+                vec4 i3 = m[3];
+            
+                mat4 outMatrix = mat4(
+                     vec4(i0.x, i1.x, i2.x, i3.x),
+                     vec4(i0.y, i1.y, i2.y, i3.y),
+                     vec4(i0.z, i1.z, i2.z, i3.z),
+                     vec4(i0.w, i1.w, i2.w, i3.w)
+                     );
+                                 
+                return outMatrix;
+            }
+                                                                     
+            void mainImage(out vec4 fragColor) 
+            {            
+                vec3 cameraPosition = camPos;
                 
-<span class="param-type"><a href="Object.html">Object</a></span>
-
-
+                vec3 lightDirection = normalize(sunPos);               
+                             
+                vec2 uv = (2.0 * gl_FragCoord.xy - iResolution.xy) / iResolution.y;
+                float fieldOfView = fov;
+                float z = 1.0 / tan(fieldOfView * 0.5 * PI / 180.0);
+                vec3 rayDirection = normalize(vec3(uv, -z));
+                vec4 rd = transpose(viewMatrix) * vec4(rayDirection, 1.0);
+                rayDirection = rd.xyz;               
+                                          
+                vec3 light = vec3(0.0);
+                vec3 transmittanceFromCameraToSpace = vec3(1.0);
+                float offset = 0.0;
+                float distanceToSpace = 0.0;
+                                                
+                rayDirection = normalize(rayDirection * SPHERE_TO_ELLIPSOID_SCALE);
+                cameraPosition *= SPHERE_TO_ELLIPSOID_SCALE;
+                lightDirection = normalize(lightDirection * SPHERE_TO_ELLIPSOID_SCALE);
+                                                
+                if (intersectSphere(cameraPosition, rayDirection, TOP_RADIUS, offset, distanceToSpace)) 
+                {    
+                    vec3 rayOrigin = cameraPosition;
+                    
+                    // above atmosphere                    
+                    if (offset > 0.0) {
+                        // intersection of camera ray with atmosphere
+                        rayOrigin = cameraPosition + rayDirection * offset;
+                    }
+                    
+                    float height = length(rayOrigin) - BOTTOM_RADIUS;
+                    float rayAngle = dot(rayOrigin, rayDirection) / length(rayOrigin);
+                    bool cameraBelow = rayAngle &lt; 0.0;
+                    
+                    transmittanceFromCameraToSpace = transmittanceFromTexture(height, cameraBelow ? -rayAngle : rayAngle);
+                    
+                    float phaseAngle = dot(lightDirection, rayDirection);
+                    float rayleighPhase = rayleighPhase(phaseAngle);
+                    float miePhase = miePhase(phaseAngle);
+                    
+                    float distanceToGround = 0.0;
+                    
+                    bool hitGround = intersectSphere(cameraPosition, rayDirection, BOTTOM_RADIUS, distanceToGround) &amp;&amp; distanceToGround > 0.0;
+                    
+                    if(intersectSphere(cameraPosition, rayDirection, BOTTOM_RADIUS - 15000.0, distanceToGround) &amp;&amp; hitGround){
+                        discard;
+                    }
+                    
+                    float segmentLength = ((hitGround ? distanceToGround : distanceToSpace) - max(offset, 0.0)) / float(SAMPLE_COUNT);
+                            
+                    float t = segmentLength * 0.5;
+                    
+                    vec3 transmittanceCamera; 
+                    vec3 transmittanceLight; 
             
-            </td>
+                    for (int i = 0; i &lt; SAMPLE_COUNT; i++) 
+                    {
+                        vec3 position = rayOrigin + t * rayDirection;
+                        float height = length(position) - BOTTOM_RADIUS; 
+                        vec3 up = position / length(position);
+                        float rayAngle = dot(up, rayDirection);
+                        float lightAngle = dot(up, lightDirection);
+                        // shadow is ommitted because it can create banding artifacts with low sample counts
+                        // float distanceToGround;
+                        // float shadow = intersectSphere(position, lightDirection, BOTTOM_RADIUS, distanceToGround) &amp;&amp; distanceToGround >= 0.0 ? 0.0 : 1.0;         
+                        float shadow = 1.0;
+                        vec3 transmittanceToSpace = transmittanceFromTexture(height, cameraBelow ? -rayAngle : rayAngle);
+                        transmittanceCamera = cameraBelow ? (transmittanceToSpace / transmittanceFromCameraToSpace) : (transmittanceFromCameraToSpace / transmittanceToSpace);
+                        transmittanceLight = transmittanceFromTexture(height, lightAngle);
+                        vec2 opticalDensity = exp(-height / vec2(rayleighScaleHeight, mieScaleHeight));
+                        vec3 scatteredLight = transmittanceLight * (rayleighScatteringCoefficient * opticalDensity.x * rayleighPhase + mieScatteringCoefficient * opticalDensity.y * miePhase);
+                        scatteredLight += multipleScatteringContributionFromTexture(height, lightAngle) * (rayleighScatteringCoefficient * opticalDensity.x + mieScatteringCoefficient * opticalDensity.y);  
+                        light += shadow * transmittanceCamera * scatteredLight * segmentLength;
+                        t += segmentLength;
+                    }
+                    
+                    light *= SUN_INTENSITY;
             
-            
-            
-            <td class="description last">
+                    if (hitGround) 
+                    {
+                        vec3 hitPoint = cameraPosition + rayDirection * distanceToGround;
+                        vec3 up = hitPoint / length(hitPoint);
+                        float diffuseAngle = max(dot(up, lightDirection), 0.0);
+                        float lightAngle = dot(up, lightDirection);
+                        float groundAlbedo = 0.05;
+                        light += transmittanceCamera * (groundAlbedo / PI) * multipleScatteringContributionFromTexture(height, lightAngle) * SUN_INTENSITY;
+                        light += transmittanceCamera * transmittanceLight * (groundAlbedo / PI) * diffuseAngle * SUN_INTENSITY;
+                    }
+                }
+                                     
+                // sun disk
+                float distanceToGround;
+                bool hitGround = intersectSphere(cameraPosition, rayDirection, BOTTOM_RADIUS, distanceToGround) &amp;&amp; distanceToGround > 0.0;
+                if (!hitGround) {
+                   float angle = dot(rayDirection, lightDirection);
+                   if (angle > cos(SUN_ANGULAR_RADIUS)) {
+                      light = SUN_INTENSITY * transmittanceFromCameraToSpace;
+                   }
+                }
                 
-                Current ActiveXObject object.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-    
-    </div>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
+                // sun disk
+                // float distanceToGround = 0.0;
+                // bool hitGround = intersectSphere(cameraPosition, rayDirection, BOTTOM_RADIUS, distanceToGround) &amp;&amp; distanceToGround > 0.0;
+                // if(!hitGround)
+                // {
+                //     vec3 sunLum = sunWithBloom(rayDirection, lightDirection) * vec3(1.0,1.0,0.8);
+                //     // limit the bloom effect
+                //     sunLum = smoothstep(0.002, 1.0, sunLum);
+                //     light += sunLum * SUN_INTENSITY * transmittanceFromCameraToSpace;
+                // }
             
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="abort">
-            
-            abort<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_ajax.js.html">og/ajax.js</a>, <a href="og_ajax.js.html#line75">line 75</a>
-        </div>
-        
-    </div>
+                vec3 color = light;
+                // tone mapping
+                // float exposure = 10.0;
+                // color = (1.0 - exp(color * -exposure));
+                color *= 8.0;
+                //color = aces(color);
+                color = pow(color, vec3(1.0 / 2.2));
+                fragColor = vec4(color, 1.0);               
+            }
+                                    
+            void main(void) 
+            {                            
+                mainImage(gl_FragColor);            
+            }`
+    });
+}
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Aborts current ajax.
-    </div>
-    
+export { Atmosphere };
+</code></pre>
+        </article>
+    </section>
 
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        </dl>
-    
-    
-    
-    
-    
-
-    
-</article>
-
-</section>  
 
 
 
@@ -5290,7 +5431,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a> on Thu Feb 09 2023 08:48:49 GMT+0000 (Coordinated Universal Time)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a> on Fri Feb 17 2023 11:58:25 GMT+0000 (Coordinated Universal Time)
         </footer>
     </div>
 </div>
