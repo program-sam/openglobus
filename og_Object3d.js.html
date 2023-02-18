@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Class: GeoVideo</title>
+    <title>Source: og/Object3d.js</title>
     
     
     
@@ -5020,822 +5020,392 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="module-og_layer_GeoVideo-GeoVideo.html">Class: GeoVideo</h1>
+        <h1 class="page-title" data-filename="og_Object3d.js.html">Source: og/Object3d.js</h1>
         
 
 
-
-<section>
-    
-<header>
-    <h2>
-        <span class="ancestors"><a href="module-og_layer_GeoVideo.html">og/layer/GeoVideo</a>~</span>
     
-    GeoVideo
-    </h2>
-    
-        <div class="class-description">Used to load and display a video stream by specific corners coordinates on the globe, implements og.layer.BaseGeoImage interface.</div>
-    
-</header>  
+    <section>
+        <article>
+            <pre id="source-code" class="prettyprint source "><code>/* eslint-disable no-param-reassign */
+'use strict';
+
+import { htmlColorToFloat32Array } from './utils/shared.js';
+import { Vec3 } from './math/Vec3.js';
+import { MIN, MAX } from './math.js';
+
+function getColor(color) {
+    if (color instanceof Array) {
+        return color;
+    } else if (typeof color === 'string') {
+        return htmlColorToFloat32Array(color);
+    }
+    return [1.0, 1.0, 1.0, 1.0];
+}
+
+class Object3d {
+    constructor(data) {
+
+        this._name = data.name || "noname";
+        this._vertices = data.vertices || [];
+        this._numVertices = this._vertices.length / 3;
+        this._texCoords = data.texCoords || new Array(2 * this._numVertices);
+
+        if (data.center) {
+            Object3d.centering(this._vertices);
+        }
+
+        /**
+         * Image src.
+         * @protected
+         * @type {string}
+         */
+        this._src = data.src || null;
+
+        this.color = getColor(data.color);
+
+        if (data.scale) {
+            Object3d.scale(this._vertices, data.scale);
+        }
+
+        if (data.indexes) {
+            this._indexes = data.indexes || [];
+            this._normals = data.normals || [];
+        } else {
+            this._normals = Object3d.getNormals(this._vertices);
+            this._indexes = new Array(this._vertices.length);
+            for (let i = 0, len = this._indexes.length; i &lt; len; i++) {
+                this._indexes[i] = i;
+            }
+        }
+    }
+
+    static centering(verts) {
+        let min_x = MAX, min_y = MAX, min_z = MAX, max_x = MIN, max_y = MIN, max_z = MIN;
+        for (let i = 0, len = verts.length; i &lt; len; i += 3) {
+            let x = verts[i], y = verts[i + 1], z = verts[i + 2];
+            if (x &lt; min_x) min_x = x;
+            if (y &lt; min_y) min_y = y;
+            if (z &lt; min_z) min_z = z;
+            if (x > max_x) max_x = x;
+            if (y > max_y) max_y = y;
+            if (z > max_z) max_z = z;
+        }
+
+        let c_x = min_x + (max_x - min_x) * 0.5;
+        let c_y = min_y + (max_y - min_y) * 0.5;
+        let c_z = min_z + (max_z - min_z) * 0.5;
+
+        for (let i = 0, len = verts.length; i &lt; len; i += 3) {
+            verts[i] -= c_x;
+            verts[i + 1] -= c_y;
+            verts[i + 2] -= c_z;
+        }
+    }
+
+    get src() {
+        return this._src;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    get vertices() {
+        return this._vertices;
+    }
+
+    get normals() {
+        return this._normals;
+    }
+
+    get indexes() {
+        return this._indexes;
+    }
+
+    get texCoords() {
+        return this._texCoords;
+    }
+
+    get numVertices() {
+        return this._numVertices;
+    }
+
+    static scale(vertices, s) {
+        for (let i = 0; i &lt; vertices.length; i++) {
+            vertices[i] *= s;
+        }
+    }
+
+    static centroid(vertices) {
+        let minX = 1000.0, minY = 1000.0, minZ = 1000.0, maxX = -1000.0, maxY = -1000.0, maxZ = -1000.0;
+
+        for (let i = 0; i &lt; vertices.length; i += 3) {
+            let x = vertices[i], y = vertices[i + 1], z = vertices[i + 2];
+            if (x &lt; minX) minX = x;
+            if (y &lt; minY) minY = y;
+            if (z &lt; minZ) minZ = z;
+            if (x > maxX) maxX = x;
+            if (y > maxY) maxY = y;
+            if (z > maxZ) maxZ = z;
+        }
+
+        return [minX + (maxX - minX) * 0.5, minY + (maxY - minY) * 0.5, minZ + (maxZ - minZ) * 0.5];
+    }
+
+    static translate(vertices, v) {
+        for (let i = 0; i &lt; vertices.length; i += 3) {
+            vertices[i] -= v[0];
+            vertices[i + 1] -= v[1];
+            vertices[i + 2] -= v[2];
+        }
+    }
+
+    static getNormals(vertices) {
+        let res = new Array(vertices.length);
+
+        for (var i = 0; i &lt; vertices.length; i += 9) {
+
+            let t03 = i, t13 = i + 3, t23 = i + 6, v0_x = vertices[t03], v0_y = vertices[t03 + 1],
+                v0_z = vertices[t03 + 2], v1_x = vertices[t13], v1_y = vertices[t13 + 1], v1_z = vertices[t13 + 2],
+                v2_x = vertices[t23], v2_y = vertices[t23 + 1], v2_z = vertices[t23 + 2], vv0_x = v1_x - v0_x,
+                vv0_y = v1_y - v0_y, vv0_z = v1_z - v0_z, vv1_x = v2_x - v0_x, vv1_y = v2_y - v0_y, vv1_z = v2_z - v0_z,
+                n_x = vv0_y * vv1_z - vv0_z * vv1_y, n_y = vv0_z * vv1_x - vv0_x * vv1_z,
+                n_z = vv0_x * vv1_y - vv0_y * vv1_x;
+
+            let l = Math.sqrt(n_x * n_x + n_y * n_y + n_z * n_z);
+
+            n_x /= l;
+            n_y /= l;
+            n_z /= l;
+
+            res[t03] = n_x;
+            res[t03 + 1] = n_y;
+            res[t03 + 2] = n_z;
+
+            res[t13] = n_x;
+            res[t13 + 1] = n_y;
+            res[t13 + 2] = n_z;
+
+            res[t23] = n_x;
+            res[t23 + 1] = n_y;
+            res[t23 + 2] = n_z;
+        }
+
+        return res;
+    }
+
+    static createSphere(lonBands = 16, latBands = 16, radius = 1.0, offsetX = 0, offsetY = 0, offsetZ = 0) {
+
+        let vertices = [], indexes = [], normals = [];
+
+        for (let latNumber = 0; latNumber &lt;= latBands; latNumber++) {
+            var theta = latNumber * Math.PI / latBands;
+            var sinTheta = Math.sin(theta);
+            var cosTheta = Math.cos(theta);
+
+            for (let longNumber = 0; longNumber &lt;= lonBands; longNumber++) {
+                var phi = longNumber * 2 * Math.PI / lonBands;
+                var sinPhi = Math.sin(phi);
+                var cosPhi = Math.cos(phi);
+                var x = cosPhi * sinTheta + offsetX;
+                var y = cosTheta + offsetY;
+                var z = sinPhi * sinTheta + offsetZ;
+                //var u = 1 - (longNumber / lonBands);
+                //var v = latNumber / latBands;
+                normals.push(x);
+                normals.push(y);
+                normals.push(z);
+                //texCoords.push(u);
+                //texCoords.push(v);
+                vertices.push(radius * x);
+                vertices.push(radius * y);
+                vertices.push(radius * z);
+            }
+        }
 
-<article>
-    <div class="container-overview">
-    
-    
-    
-        
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="GeoVideo">
-            
-            new GeoVideo<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_layer_GeoVideo.js.html">og/layer/GeoVideo.js</a>, <a href="og_layer_GeoVideo.js.html#line14">line 14</a>
-        </div>
-        
-    </div>
+        for (let latNumber = 0; latNumber &lt; latBands; latNumber++) {
+            for (let longNumber = 0; longNumber &lt; lonBands; longNumber++) {
+                var first = (latNumber * (lonBands + 1)) + longNumber;
+                var second = first + lonBands + 1;
 
-    
-</dt>
-<dd>
-    
-    
+                indexes.push(first);
+                indexes.push(first + 1);
+                indexes.push(second);
 
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+                indexes.push(second);
+                indexes.push(first + 1);
+                indexes.push(second + 1);
+            }
+        }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+        return new Object3d({
+            'vertices': vertices, 'normals': normals, 'indexes': indexes
+        });
+    }
 
-    
-    
+    static createDisc(radius = 1.0, height = 0.0, radialSegments = 8, isTop = true, startIndex = 0, offsetX = 0, offsetY, offsetZ = 0) {
 
-    
+        let vertices = [], indexes = [], normals = [];
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+        let thetaStart = 0.0, thetaLength = Math.PI * 2;
 
-    
-    </div>
-    
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li>BaseGeoImage</li>
-        </ul>
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="_animate"><span class="type-signature ">protected,constant</span>_animate<span class="type-signature type boolean">Boolean</span> </h4>
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+        let sign = (isTop === true) ? 1.0 : -1.0;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+        let centerIndexStart = startIndex;
 
-    
-    
-</dd>
+        for (let x = 1; x &lt;= radialSegments; x++) {
+            vertices.push(0 + offsetX, height * sign + offsetY, 0 + offsetZ);
+            normals.push(0, sign, 0);
+            //texCoords.push(0.5, 0.5);
+            startIndex++;
+        }
 
-        </dl>
-    
-    
-    
-        <h3 class="subsection-title">Methods</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="_createSourceTexture">
-            
-            <span class="type-signature ">abstract,protected</span>_createSourceTexture<span class="signature">()</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_layer_GeoVideo.js.html">og/layer/GeoVideo.js</a>, <a href="og_layer_GeoVideo.js.html#line92">line 92</a>
-        </div>
-        
-    </div>
+        let centerIndexEnd = startIndex;
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Creates or refresh source video GL texture.
-    </div>
-    
+        for (let x = 0; x &lt;= radialSegments; x++) {
 
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+            let u = x / radialSegments;
+            let theta = u * thetaLength + thetaStart;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+            let cosTheta = Math.cos(theta);
+            let sinTheta = Math.sin(theta);
 
-    
-    
+            vertices.push(radius * sinTheta + offsetX, height * sign + offsetY, radius * cosTheta + offsetZ);
+            normals.push(0, sign, 0);
+            //texCoords.push((cosTheta * 0.5) + 0.5, (sinTheta * 0.5 * sign) + 0.5);
 
-    
+            startIndex++;
+        }
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="abortMaterialLoading">
-            
-            <span class="type-signature ">abstract</span>abortMaterialLoading<span class="signature">(material)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_layer_GeoVideo.js.html">og/layer/GeoVideo.js</a>, <a href="og_layer_GeoVideo.js.html#line183">line 183</a>
-        </div>
-        
-    </div>
+        for (let x = 0; x &lt; radialSegments; x++) {
+            let c = centerIndexStart + x, i = centerIndexEnd + x;
+            if (isTop === true) {
+                indexes.push(i, i + 1, c);
+            } else {
+                indexes.push(i + 1, i, c);
+            }
+        }
 
-    
-</dt>
-<dd>
-    
-    
+        return new Object3d({
+            'vertices': vertices, 'normals': normals, 'indexes': indexes
+        });
+    }
 
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>material</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Material</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                GeoImage material.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+    static createCylinder(radiusTop = 1.0, radiusBottom = 1.0, height = 1.0, radialSegments = 32, heightSegments = 1.0, isTop = true, isBottom = true, offsetX = 0, offsetY = 0, offsetZ = 0) {
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+        let vertices = [], indexes = [], normals = [];
 
-    
-    
+        let thetaStart = 0.0, thetaLength = Math.PI * 2;
 
-    
+        let index = 0;
+        let indexArray = [];
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="loadMaterial">
-            
-            <span class="type-signature ">abstract</span>loadMaterial<span class="signature">(material)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_layer_GeoVideo.js.html">og/layer/GeoVideo.js</a>, <a href="og_layer_GeoVideo.js.html#line144">line 144</a>
-        </div>
-        
-    </div>
+        let normal = new Vec3();
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Loads planet segment material. In this case - GeoImage source video.
-    </div>
-    
+        var slope = (radiusBottom - radiusTop) / height;
 
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>material</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Material</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                GeoImage planet material.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+        for (let y = 0; y &lt;= heightSegments; y++) {
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+            let indexRow = [];
 
-    
-    
+            let v = y / heightSegments;
 
-    
+            let radius = v * (radiusBottom - radiusTop) + radiusTop;
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setSrc">
-            
-            setSrc<span class="signature">(srs)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_layer_GeoVideo.js.html">og/layer/GeoVideo.js</a>, <a href="og_layer_GeoVideo.js.html#line49">line 49</a>
-        </div>
-        
-    </div>
+            for (let x = 0; x &lt;= radialSegments; x++) {
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Sets video source url path.
-    </div>
-    
+                let u = x / radialSegments;
 
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>srs</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                Video url path.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+                let theta = u * thetaLength + thetaStart;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+                let sinTheta = Math.sin(theta), cosTheta = Math.cos(theta);
 
-    
-    
+                vertices.push(radius * sinTheta + offsetX, -v * height + height + offsetY, radius * cosTheta + offsetZ);
 
-    
+                normal.set(sinTheta, slope, cosTheta).normalize();
+                normals.push(normal.x, normal.y, normal.z);
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setVideoElement">
-            
-            setVideoElement<span class="signature">(video)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_layer_GeoVideo.js.html">og/layer/GeoVideo.js</a>, <a href="og_layer_GeoVideo.js.html#line60">line 60</a>
-        </div>
-        
-    </div>
+                //texCoords.push(u, 1 - v);
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Sets HTML5 video object.
-    </div>
-    
+                indexRow.push(index++);
+            }
+            indexArray.push(indexRow);
+        }
 
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>video</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Object.html">Object</a></span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                HTML5 video element object.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+        for (let x = 0; x &lt; radialSegments; x++) {
+            for (let y = 0; y &lt; heightSegments; y++) {
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+                let a = indexArray[y][x], b = indexArray[y + 1][x], c = indexArray[y + 1][x + 1],
+                    d = indexArray[y][x + 1];
 
-    
-    
+                indexes.push(a, b, d);
+                indexes.push(b, c, d);
+            }
+        }
 
-    
+        if (radiusTop !== 0.0 &amp;&amp; isTop) {
+            let cap = Object3d.createDisc(radiusTop, height, radialSegments, true, index, offsetX, offsetY, offsetZ);
+            vertices.push(...cap.vertices);
+            normals.push(...cap.normals);
+            indexes.push(...cap.indexes);
+        }
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="setVisibility">
-            
-            setVisibility<span class="signature">(visibility)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="og_layer_GeoVideo.js.html">og/layer/GeoVideo.js</a>, <a href="og_layer_GeoVideo.js.html#line72">line 72</a>
-        </div>
-        
-    </div>
+        if (radiusBottom !== 0.0 &amp;&amp; isBottom) {
+            let cap = Object3d.createDisc(radiusBottom, 0, radialSegments, false, index + (isTop ? (1 + 2 * radialSegments) : 0), offsetX, offsetY, offsetZ);
+            vertices.push(...cap.vertices);
+            normals.push(...cap.normals);
+            indexes.push(...cap.indexes);
+        }
 
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Sets layer visibility.
-    </div>
-    
+        return new Object3d({
+            'vertices': vertices, 'normals': normals, 'indexes': indexes
+        });
+    }
 
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>visibility</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                Layer visibility.</td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
+    static createCube(length = 1, height = 1, depth = 1, xOffset = 0, yOffset = 0, zOffset = 0) {
+        let l = length * 0.5 + xOffset, h = height * 0.5 + yOffset, d = depth * 0.5 + zOffset;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
+        return new Object3d({
+            vertices: [//bottom
+                -l, -h, d, l, -h, -d, l, -h, d, -l, -h, d, -l, -h, -d, l, -h, -d,
 
-    
-    
+                //top
+                -l, h, d, l, h, d, l, h, -d, -l, h, d, l, h, -d, -l, h, -d,
 
-    
+                //front
+                -l, -h, d, l, -h, d, -l, h, d, -l, h, d, l, -h, d, l, h, d,
 
-    
-    
-    
-    
-    
-    
-    
-</dd>
+                //back
+                -l, -h, -d, -l, h, -d, l, -h, -d, -l, h, -d, l, h, -d, l, -h, -d,
 
-        </dl>
-    
-    
-    
-    
-    
+                //left
+                l, -h, d, l, -h, -d, l, h, d, l, h, d, l, -h, -d, l, h, -d,
 
-    
-</article>
+                //right
+                -l, -h, d, -l, h, d, -l, -h, -d, -l, h, d, -l, h, -d, -l, -h, -d]
+        });
+    }
+
+    static createArrow(back = 0.0, height = 2.1, front = -15) {
+        return new Object3d({
+            vertices: [0, height, 0, 7, 0, 6, 0, 0, front,
+
+                0, 0, back, 7, 0, 6, 0, height, 0,
+
+                -7, 0, 6, 0, 0, back, 0, height, 0,
+
+                -7, 0, 6, 0, height, 0, 0, 0, front,
+
+                -7, 0, 6, 0, 0, front, 0, 0, back, 0, 0, back, 0, 0, front, 7, 0, 6]
+        });
+    }
+}
+
+export { Object3d };</code></pre>
+        </article>
+    </section>
 
-</section>  
 
 
 
@@ -5844,7 +5414,7 @@
         
 
         <footer>
-            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a> on Sat Feb 18 2023 12:06:27 GMT+0000 (Coordinated Universal Time)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.0</a> on Sat Feb 18 2023 12:06:23 GMT+0000 (Coordinated Universal Time)
         </footer>
     </div>
 </div>
