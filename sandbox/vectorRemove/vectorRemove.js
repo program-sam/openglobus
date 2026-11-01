@@ -17,7 +17,7 @@ layer.addTo(globus.planet);
 
 const $ = (id) => document.getElementById(id);
 
-// Entity -> { line, fill } for picking the targets of the buttons and restoring the hover color.
+// Entity -> { line, fill, lineColor } for picking the targets of the buttons and restoring the hover color.
 const info = new WeakMap();
 
 const W = -10,
@@ -211,7 +211,7 @@ function timed(label, entities, fn) {
 $("rebuild").onclick = rebuild;
 
 $("front").onclick = () => {
-    const entities = pick(isPolygon);
+    const entities = pick(any);
     timed("bringToFront", entities, (es) => es.forEach((e) => e.geometry.bringToFront()));
 };
 
@@ -222,6 +222,16 @@ $("frontOne").onclick = () => {
     info.get(e).fill = [1, 0.85, 0];
     e.geometry.setFillColor(1, 0.85, 0, 0.7);
     timed("bringToFront polygon", [e], () => e.geometry.bringToFront());
+};
+
+// The line turns yellow and thick, so it is easy to see that it is drawn above the polygons.
+$("frontLine").onclick = () => {
+    const [e] = pick(isLine);
+    if (!e) return;
+    info.get(e).lineColor = [1, 0.85, 0];
+    e.geometry.setLineColor(1, 0.85, 0, 1);
+    e.geometry.setLineWidth(5);
+    timed("bringToFront line", [e], () => e.geometry.bringToFront());
 };
 
 $("bulk").onclick =() => timed("removeEntities", pick(any), (es) => layer.removeEntities(es));
@@ -245,16 +255,25 @@ $("listener").onchange = (ev) => {
 
 layer.events.on("mouseenter", (e) => {
     const entity = e.pickingObject;
-    if (!entity || !entity.geometry || info.get(entity).line) return;
+    if (!entity || !entity.geometry) return;
     $("hover").checked && entity.geometry.bringToFront();
-    entity.geometry.setFillColor(1, 0, 0, 0.7);
+    if (info.get(entity).line) {
+        entity.geometry.setLineColor(1, 0, 0, 1);
+    } else {
+        entity.geometry.setFillColor(1, 0, 0, 0.7);
+    }
 });
 
 layer.events.on("mouseleave", (e) => {
     const entity = e.pickingObject;
-    if (!entity || !entity.geometry || info.get(entity).line) return;
-    const [r, g, b] = info.get(entity).fill;
-    entity.geometry.setFillColor(r, g, b, 0.7);
+    if (!entity || !entity.geometry) return;
+    if (info.get(entity).line) {
+        const [r, g, b] = info.get(entity).lineColor || [20 / 255, 20 / 255, 120 / 255];
+        entity.geometry.setLineColor(r, g, b, 1);
+    } else {
+        const [r, g, b] = info.get(entity).fill;
+        entity.geometry.setFillColor(r, g, b, 0.7);
+    }
 });
 
 layer.events.on("lclick", (e) => {

@@ -887,8 +887,8 @@ class GeometryHandler {
     }
 
     /**
-     * Removes several geometries with one compaction pass over the shared arrays,
-     * instead of one splice and reindex per geometry.
+     * Removes geometries with one compaction pass over the shared arrays.
+     * Works in any array order, including after bringToFront().
      * @public
      * @param {Geometry[]} geometries - Geometries to remove; others are ignored.
      */
@@ -1274,21 +1274,40 @@ class GeometryHandler {
     }
 
     public bringToFront(geometry: Geometry) {
-        let polyIndexes = this._polyIndexes.splice(geometry._polyIndexesHandlerIndex, geometry._polyIndexesLength);
-        let lineIndexes = this._lineIndexes.splice(geometry._lineIndexesHandlerIndex, geometry._lineIndexesLength);
+        // A length of -1 means the geometry has no data of that kind, e.g. a line string has no polygon.
+        const polyLength = geometry._polyIndexesLength,
+            lineLength = geometry._lineIndexesLength;
+
+        let polyIndexes =
+            polyLength >= 0 ? this._polyIndexes.splice(geometry._polyIndexesHandlerIndex, polyLength) : [];
+
+        let lineIndexes =
+            lineLength >= 0 ? this._lineIndexes.splice(geometry._lineIndexesHandlerIndex, lineLength) : [];
 
         this._geometries.splice(geometry._handlerIndex, 1);
 
         let g = this._geometries;
         for (let i = geometry._handlerIndex; i < g.length; i++) {
             let gi = g[i];
+
             gi._handlerIndex = i;
-            gi._polyIndexesHandlerIndex -= geometry._polyIndexesLength;
-            gi._lineIndexesHandlerIndex -= geometry._lineIndexesLength;
+
+            if (polyLength > 0 && gi._polyIndexesLength >= 0) {
+                gi._polyIndexesHandlerIndex -= polyLength;
+            }
+
+            if (lineLength > 0 && gi._lineIndexesLength >= 0) {
+                gi._lineIndexesHandlerIndex -= lineLength;
+            }
         }
 
-        geometry._polyIndexesHandlerIndex = this._polyIndexes.length;
-        geometry._lineIndexesHandlerIndex = this._lineIndexes.length;
+        if (polyLength >= 0) {
+            geometry._polyIndexesHandlerIndex = this._polyIndexes.length;
+        }
+
+        if (lineLength >= 0) {
+            geometry._lineIndexesHandlerIndex = this._lineIndexes.length;
+        }
 
         geometry._handlerIndex = this._geometries.length;
         this._geometries.push(geometry);

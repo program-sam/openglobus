@@ -29,20 +29,6 @@ const OFFSETS = [
     "_lineIndexesHandlerIndex"
 ];
 
-const OFFSET_LENGTHS = {
-    _polyVerticesHandlerIndex: "_polyVerticesLength",
-    _polyIndexesHandlerIndex: "_polyIndexesLength",
-    _lineVerticesHandlerIndex: "_lineVerticesLength",
-    _lineOrdersHandlerIndex: "_lineOrdersLength",
-    _lineColorsHandlerIndex: "_lineColorsLength",
-    _lineThicknessHandlerIndex: "_lineThicknessLength",
-    _lineIndexesHandlerIndex: "_lineIndexesLength"
-};
-
-// An offset means nothing when the geometry has no data of that kind (length -1):
-// bringToFront() shifts such offsets too.
-const offsetsOf = (g) => OFFSETS.map((name) => (g[OFFSET_LENGTHS[name]] < 0 ? -1 : g[name]));
-
 const ring = (x, y, n) => {
     const r = [];
     for (let i = 0; i < n; i++) {
@@ -155,7 +141,9 @@ const expectSameAsSurvivors = (removeAll, steps) => {
     }
 
     expect(ARRAYS.map((name) => handler[name])).toEqual(ARRAYS.map((name) => reference[name]));
-    expect(kept.map((i) => offsetsOf(entities[i].geometry))).toEqual(survivors.map((e) => offsetsOf(e.geometry)));
+    expect(kept.map((i) => OFFSETS.map((name) => entities[i].geometry[name]))).toEqual(
+        survivors.map((e) => OFFSETS.map((name) => e.geometry[name]))
+    );
     expect(handler._lineIndexes.length).toBeGreaterThan(0);
     for (const i of removedIndexes) {
         expect(entities[i].geometry._handler).toBe(null);
@@ -163,30 +151,56 @@ const expectSameAsSurvivors = (removeAll, steps) => {
     }
 };
 
+// In makeMixed(), i % 4 gives 0 polygon, 1 line string, 2 multi line string, 3 multipolygon.
+
 test.each(REMOVERS)("%s handles line strings and mixed layers", (_, removeAll) => {
     expectSameAsSurvivors(removeAll, [{ remove: [0, 1, 2, 6, 7, 13, 21, 22, 30, 31] }]);
 });
 
-// Only polygons are brought to front: bringToFront() of a line string is broken on its own,
-// its polygon lengths are -1.
 test.each(REMOVERS)("%s after bringToFront()", (_, removeAll) => {
-    expectSameAsSurvivors(removeAll, [{ front: [3, 8, 24] }, { remove: [0, 2, 6, 7, 13, 21, 22, 31] }]);
+    expectSameAsSurvivors(removeAll, [{ front: [3, 5, 8, 10, 24] }, { remove: [0, 2, 6, 7, 13, 21, 22, 31] }]);
 });
 
-// Hover brings a polygon to front, then a click removes it.
+// Hover brings a geometry to front, then a click removes it.
 test.each(REMOVERS)("%s of the geometry just brought to front", (_, removeAll) => {
-    expectSameAsSurvivors(removeAll, [{ front: [8] }, { remove: [8] }, { front: [3] }, { remove: [3] }]);
+    expectSameAsSurvivors(removeAll, [
+        { front: [8] },
+        { remove: [8] },
+        { front: [5] },
+        { remove: [5] },
+        { front: [3] },
+        { remove: [3] }
+    ]);
 });
 
 test.each(REMOVERS)("%s after repeated bringToFront() and removals", (_, removeAll) => {
     expectSameAsSurvivors(removeAll, [
-        { front: [3, 8] },
+        { front: [3, 9, 8] },
         { remove: [1, 6, 13] },
-        { front: [3, 15, 24, 8] },
+        { front: [3, 15, 24, 9, 8, 10] },
         { remove: [0, 7, 21, 22] },
-        { front: [12, 15] },
-        { remove: [3, 30] }
+        { front: [12, 15, 17] },
+        { remove: [3, 9, 30] }
     ]);
+});
+
+test("bringToFront() of line strings keeps every geometry's indexes", () => {
+    const handler = new GeometryHandler({});
+    const entities = makeMixed([...Array(16).keys()]);
+    for (const e of entities) handler.add(e.geometry);
+
+    const indexesOf = (g) => [
+        g._polyIndexesLength < 0
+            ? null
+            : handler._polyIndexes.slice(g._polyIndexesHandlerIndex, g._polyIndexesHandlerIndex + g._polyIndexesLength),
+        handler._lineIndexes.slice(g._lineIndexesHandlerIndex, g._lineIndexesHandlerIndex + g._lineIndexesLength)
+    ];
+    const before = entities.map((e) => indexesOf(e.geometry));
+
+    for (const i of [1, 2, 5, 0, 9]) handler.bringToFront(entities[i].geometry);
+
+    expect(entities.map((e) => indexesOf(e.geometry))).toEqual(before);
+    expect(entities[1].geometry._polyIndexesHandlerIndex).toBe(-1);
 });
 
 test("removeGeometries does not fall back to remove() after bringToFront()", () => {
