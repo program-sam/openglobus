@@ -29,6 +29,20 @@ const OFFSETS = [
     "_lineIndexesHandlerIndex"
 ];
 
+const OFFSET_LENGTHS = {
+    _polyVerticesHandlerIndex: "_polyVerticesLength",
+    _polyIndexesHandlerIndex: "_polyIndexesLength",
+    _lineVerticesHandlerIndex: "_lineVerticesLength",
+    _lineOrdersHandlerIndex: "_lineOrdersLength",
+    _lineColorsHandlerIndex: "_lineColorsLength",
+    _lineThicknessHandlerIndex: "_lineThicknessLength",
+    _lineIndexesHandlerIndex: "_lineIndexesLength"
+};
+
+// An offset means nothing when the geometry has no data of that kind (length -1):
+// bringToFront() shifts such offsets too.
+const offsetsOf = (g) => OFFSETS.map((name) => (g[OFFSET_LENGTHS[name]] < 0 ? -1 : g[name]));
+
 const ring = (x, y, n) => {
     const r = [];
     for (let i = 0; i < n; i++) {
@@ -91,54 +105,98 @@ test("removeGeometries ignores geometries of another handler", () => {
     expect(own.entities[2].geometry._handlerIndex).toBe(-1);
 });
 
-test("removeGeometries falls back to remove() after bringToFront()", () => {
-    const removedIndexes = [2, 5];
-    const kept = [...Array(40).keys()].filter((i) => !removedIndexes.includes(i));
+const makeMixed = (indexes) =>
+    indexes.map((i) => {
+        const kind = i % 4;
+        const geometry =
+            kind === 0
+                ? { type: "POLYGON", coordinates: [ring(i, 0, 3 + (i % 5))] }
+                : kind === 1
+                  ? { type: "LINESTRING", coordinates: ring(i, 2, 2 + (i % 4)) }
+                  : kind === 2
+                    ? { type: "MULTILINESTRING", coordinates: [ring(i, 4, 3), ring(i, 6, 2 + (i % 3))] }
+                    : { type: "MULTIPOLYGON", coordinates: [[ring(i, 8, 4)], [ring(i, 10, 3 + (i % 2))]] };
+        return new Entity({ geometry });
+    });
 
-    const one = setup();
-    one.handler.bringToFront(one.entities[10].geometry);
-    for (let i = removedIndexes.length - 1; i >= 0; i--) one.handler.remove(one.entities[removedIndexes[i]].geometry);
+const REMOVERS = [
+    ["removeGeometries", (handler, geometries) => handler.removeGeometries(geometries)],
+    ["remove", (handler, geometries) => geometries.forEach((g) => handler.remove(g))]
+];
 
-    const batch = setup();
-    batch.handler.bringToFront(batch.entities[10].geometry);
-    batch.handler.removeGeometries(removedIndexes.map((i) => batch.entities[i].geometry));
-
-    expect(snapshot(batch, kept)).toEqual(snapshot(one, kept));
-});
-
-// remove() mishandles geometries without polygon data, so lines are checked against
-// a handler built from the surviving geometries only.
-test("removeGeometries handles line strings and mixed layers", () => {
-    const makeMixed = (indexes) =>
-        indexes.map((i) => {
-            const kind = i % 4;
-            const geometry =
-                kind === 0
-                    ? { type: "POLYGON", coordinates: [ring(i, 0, 3 + (i % 5))] }
-                    : kind === 1
-                      ? { type: "LINESTRING", coordinates: ring(i, 2, 2 + (i % 4)) }
-                      : kind === 2
-                        ? { type: "MULTILINESTRING", coordinates: [ring(i, 4, 3), ring(i, 6, 2 + (i % 3))] }
-                        : { type: "MULTIPOLYGON", coordinates: [[ring(i, 8, 4)], [ring(i, 10, 3 + (i % 2))]] };
-            return new Entity({ geometry });
-        });
-
+// Runs bringToFront() and removal steps on a mixed layer and compares the result with a handler
+// built from the surviving geometries only, with the same bringToFront() calls.
+const expectSameAsSurvivors = (removeAll, steps) => {
     const all = [...Array(32).keys()];
-    const removedIndexes = [0, 1, 2, 6, 7, 13, 21, 22, 30, 31];
-    const kept = all.filter((i) => !removedIndexes.includes(i));
-
-    const batch = new GeometryHandler({});
+    const handler = new GeometryHandler({});
     const entities = makeMixed(all);
-    for (const e of entities) batch.add(e.geometry);
-    batch.removeGeometries(removedIndexes.map((i) => entities[i].geometry));
+    for (const e of entities) handler.add(e.geometry);
+
+    const removedIndexes = [];
+    for (const step of steps) {
+        for (const i of step.front || []) handler.bringToFront(entities[i].geometry);
+        if (step.remove) {
+            removeAll(
+                handler,
+                step.remove.map((i) => entities[i].geometry)
+            );
+            removedIndexes.push(...step.remove);
+        }
+    }
+    const kept = all.filter((i) => !removedIndexes.includes(i));
 
     const reference = new GeometryHandler({});
     const survivors = makeMixed(kept);
     for (const e of survivors) reference.add(e.geometry);
+    for (const step of steps) {
+        for (const i of step.front || []) {
+            kept.includes(i) && reference.bringToFront(survivors[kept.indexOf(i)].geometry);
+        }
+    }
 
-    expect(ARRAYS.map((name) => batch[name])).toEqual(ARRAYS.map((name) => reference[name]));
-    expect(kept.map((i) => OFFSETS.map((name) => entities[i].geometry[name]))).toEqual(
-        survivors.map((e) => OFFSETS.map((name) => e.geometry[name]))
-    );
-    expect(batch._lineIndexes.length).toBeGreaterThan(0);
+    expect(ARRAYS.map((name) => handler[name])).toEqual(ARRAYS.map((name) => reference[name]));
+    expect(kept.map((i) => offsetsOf(entities[i].geometry))).toEqual(survivors.map((e) => offsetsOf(e.geometry)));
+    expect(handler._lineIndexes.length).toBeGreaterThan(0);
+    for (const i of removedIndexes) {
+        expect(entities[i].geometry._handler).toBe(null);
+        expect(entities[i].geometry._handlerIndex).toBe(-1);
+    }
+};
+
+test.each(REMOVERS)("%s handles line strings and mixed layers", (_, removeAll) => {
+    expectSameAsSurvivors(removeAll, [{ remove: [0, 1, 2, 6, 7, 13, 21, 22, 30, 31] }]);
+});
+
+// Only polygons are brought to front: bringToFront() of a line string is broken on its own,
+// its polygon lengths are -1.
+test.each(REMOVERS)("%s after bringToFront()", (_, removeAll) => {
+    expectSameAsSurvivors(removeAll, [{ front: [3, 8, 24] }, { remove: [0, 2, 6, 7, 13, 21, 22, 31] }]);
+});
+
+// Hover brings a polygon to front, then a click removes it.
+test.each(REMOVERS)("%s of the geometry just brought to front", (_, removeAll) => {
+    expectSameAsSurvivors(removeAll, [{ front: [8] }, { remove: [8] }, { front: [3] }, { remove: [3] }]);
+});
+
+test.each(REMOVERS)("%s after repeated bringToFront() and removals", (_, removeAll) => {
+    expectSameAsSurvivors(removeAll, [
+        { front: [3, 8] },
+        { remove: [1, 6, 13] },
+        { front: [3, 15, 24, 8] },
+        { remove: [0, 7, 21, 22] },
+        { front: [12, 15] },
+        { remove: [3, 30] }
+    ]);
+});
+
+test("removeGeometries does not fall back to remove() after bringToFront()", () => {
+    const handler = new GeometryHandler({});
+    const entities = makeMixed([...Array(8).keys()]);
+    for (const e of entities) handler.add(e.geometry);
+    handler.bringToFront(entities[0].geometry);
+    const remove = vi.spyOn(handler, "remove");
+
+    handler.removeGeometries([entities[1].geometry, entities[4].geometry]);
+
+    expect(remove).not.toHaveBeenCalled();
 });
