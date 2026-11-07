@@ -1,0 +1,149 @@
+<html>
+    <head>
+        <title>OpenGlobus - Quad tree strategies</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../../lib/og.css" type="text/css" />
+        <style>
+            body {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="globus" style="position: absolute; width: 100%; height: 100%"></div>
+        <select id="strategy" style="position: absolute; left: 64px; top: 20px"></select>
+        <script type="module" id="og-sandbox-script">
+            import {
+                CanvasTiles,
+                EmptyTerrain,
+                Globe,
+                ProceduralTerrain,
+                control,
+                quadTreeStrategyType
+            } from "../../lib/og.es.js";
+
+            // The page reloads with the chosen strategy
+            const strategy = new URLSearchParams(location.search).get("strategy") || "cubeEquiangular",
+                select = document.getElementById("strategy");
+
+            select.innerHTML = Object.keys(quadTreeStrategyType)
+                .map((s) => `<option>${s}</option>`)
+                .join("");
+            select.value = strategy;
+            select.onchange = () => (location.search = `strategy=${select.value}`);
+
+            const MAX_HEIGHT = 1000000;
+
+            // Plane waves in fixed directions, each octave twice as fine and half as high
+            const WAVES = Array.from({ length: 12 }, (_, i) => {
+                const z = 1 - (2 * (i + 0.5)) / 12,
+                    r = Math.sqrt(1 - z * z),
+                    a = i * 2.39996,
+                    f = 2 ** (i % 2);
+                return [r * Math.cos(a) * 5 * f, r * Math.sin(a) * 5 * f, z * 5 * f, 1 / f, i * 1.7];
+            });
+
+            // Elevation from -1 to 1, a function of the point in space only, so it is the same for every strategy
+            function elevation(segment, lon, lat) {
+                const p = segment._projToDeg(lon, lat),
+                    l = (p.lon * Math.PI) / 180,
+                    b = (p.lat * Math.PI) / 180,
+                    x = Math.cos(b) * Math.cos(l),
+                    y = Math.cos(b) * Math.sin(l),
+                    z = Math.sin(b);
+
+                let h = 0;
+                for (const [dx, dy, dz, amp, phase] of WAVES) h += amp * Math.sin(dx * x + dy * y + dz * z + phase);
+                return h / 4 + 0.15;
+            }
+
+            // Samples the tile on a size x size grid, rows from north to south, edges included
+            function sample(segment, size, fn) {
+                const e = segment.getExtent(),
+                    dx = e.getWidth() / (size - 1),
+                    dy = e.getHeight() / (size - 1);
+                for (let i = 0; i < size; i++)
+                    for (let j = 0; j < size; j++)
+                        fn(i, j, elevation(segment, e.southWest.lon + j * dx, e.northEast.lat - i * dy));
+            }
+
+            const COLORS = [
+                [-1, 10, 30, 90],
+                [0, 40, 110, 180],
+                [0.01, 220, 200, 140],
+                [0.1, 70, 140, 50],
+                [0.45, 110, 90, 60],
+                [0.7, 245, 245, 245]
+            ];
+
+            function color(h) {
+                let i = COLORS.findIndex((c) => c[0] > h);
+                if (i === -1) return COLORS[COLORS.length - 1].slice(1);
+                if (i === 0) return COLORS[0].slice(1);
+                const a = COLORS[i - 1],
+                    b = COLORS[i],
+                    t = (h - a[0]) / (b[0] - a[0]);
+                return [1, 2, 3].map((k) => a[k] + (b[k] - a[k]) * t);
+            }
+
+            const planet = new ProceduralTerrain("Planet", {
+                minZoom: 1,
+                maxZoom: 14,
+                maxHeight: MAX_HEIGHT,
+                getHeights: (segment) => {
+                    const heights = new Float32Array(33 * 33);
+                    sample(segment, 33, (i, j, h) => (heights[i * 33 + j] = Math.max(h, 0) * MAX_HEIGHT));
+                    return heights;
+                }
+            });
+
+            const colors = new CanvasTiles("Elevation colors", {
+                isBaseLayer: true,
+                drawTile: (material, applyCanvas) => {
+                    const size = 256,
+                        canvas = document.createElement("canvas");
+                    canvas.width = canvas.height = size;
+                    const ctx = canvas.getContext("2d"),
+                        img = ctx.createImageData(size, size);
+                    sample(material.segment, size, (i, j, h) => img.data.set([...color(h), 255], (i * size + j) * 4));
+                    ctx.putImageData(img, 0, 0);
+                    applyCanvas(canvas);
+                }
+            });
+
+            // The outline and the group / zoom / x / y of every tile of the tree
+            const quads = new CanvasTiles("Quads", {
+                drawTile: (material, applyCanvas) => {
+                    const { tileGroup, tileZoom, tileX, tileY } = material.segment,
+                        canvas = document.createElement("canvas");
+                    canvas.width = canvas.height = 256;
+                    const ctx = canvas.getContext("2d");
+                    ctx.strokeStyle = ctx.fillStyle = "red";
+                    ctx.lineWidth = 3;
+                    ctx.strokeRect(0, 0, 256, 256);
+                    ctx.font = "20px Arial";
+                    ctx.fillText(`${tileGroup}: ${tileZoom} / ${tileX} / ${tileY}`, 10, 30);
+                    applyCanvas(canvas);
+                }
+            });
+
+            window.globus = new Globe({
+                target: "globus",
+                name: "Quad tree strategies",
+                quadTreeStrategyPrototype: quadTreeStrategyType[strategy],
+                terrain: [planet, new EmptyTerrain({ name: "Empty" })],
+                layers: [colors, quads],
+                atmosphereEnabled: false,
+                nightTextureSrc: null,
+                specularTextureSrc: null
+            });
+
+            globus.planet.addControl(new control.LayerSwitcher());
+            globus.planet.addControl(new control.ToggleWireframe());
+            globus.planet.addControl(new control.DebugInfo());
+        </script>
+    </body>
+</html>
